@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Do You Miss Me?</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #ffc0cb; /* Pink background */
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+        }
+        .button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #ff69b4; /* Hot pink buttons */
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .button.no {
+            position: absolute;
+        }
+        .message {
+            display: none;
+            font-size: 24px;
+            color: #ff69b4;
+        }
+        .heart {
+            position: absolute;
+            bottom: 0;
+            font-size: 24px;
+            color: red;
+            animation: float 3s infinite ease-in-out;
+        }
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-800px);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="question">Do you miss me?</h1>
+        <button class="button yes" onclick="showMessage()">Yes</button>
+        <button class="button no" onmouseover="moveButton()">No</button>
+        <div id="message" class="message">Aww, I miss you too! ❤️</div>
+    </div>
+    <script>
+        function showMessage() {
+            document.getElementById('question').style.display = 'none';
+            document.querySelector('.button.yes').style.display = 'none';
+            document.querySelector('.button.no').style.display = 'none';
+            const message = document.getElementById('message');
+            message.style.display = 'block';
+
+            for (let i = 0; i < 50; i++) { // Increase the number of hearts
+                setTimeout(createHeart, i * 100); // Spread the creation of hearts over time
+            }
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 2 + 3 + 's'; // Random duration for more variety
+            heart.innerText = '❤️';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 5000); // Adjusted timeout to match animation duration
+        }
+
+        function moveButton() {
+            const button = document.querySelector('.button.no');
+            const container = document.querySelector('.container');
+            const containerRect = container.getBoundingClientRect();
+            const buttonRect = button.getBoundingClientRect();
+
+            let newLeft, newTop;
+
+            do {
+                newLeft = Math.random() * (containerRect.width - buttonRect.width);
+                newTop = Math.random() * (containerRect.height - buttonRect.height);
+            } while (Math.abs(newLeft - buttonRect.left) < 50 && Math.abs(newTop - buttonRect.top) < 50);
+
+            button.style.left = `${newLeft}px`;
+            button.style.top = `${newTop}px`;
+        }
+    </script>
+</body>
+</html>
